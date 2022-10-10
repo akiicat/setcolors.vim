@@ -1,5 +1,5 @@
 " Change the color scheme from a list of color scheme names.
-" Version 2010-09-12 from http://vim.wikia.com/wiki/VimTip341
+" Version 2010-09-12 Modify from http://vim.wikia.com/wiki/VimTip341
 " Press key:
 "   F8                next scheme
 "   Shift-F8          previous scheme
@@ -9,8 +9,6 @@
 "   :SetColors my               (names built into script)
 "   :SetColors blue slate ron   (these schemes)
 "   :SetColors                  (display current scheme names)
-" Set the current color scheme based on time of day:
-"   :SetColors now
 if v:version < 700 || exists('loaded_setcolors') || &cp
   finish
 endif
@@ -18,8 +16,7 @@ endif
 let loaded_setcolors = 1
 let s:mycolors = ['slate', 'torte', 'darkblue', 'delek', 'murphy', 'elflord', 'pablo', 'koehler']  " colorscheme names that we use to set color
 
-" Set list of color scheme names that we will use, except
-" argument 'now' actually changes the current color scheme.
+" Set list of color scheme names that we will use
 function! s:SetColors(args)
   if len(a:args) == 0
     echo 'Current color scheme names:'
@@ -38,8 +35,6 @@ function! s:SetColors(args)
     let c3 = 'darkblack freya motus impact less chocolateliquor'
     let s:mycolors = split(c1.' '.c2.' '.c3)
     echo 'List of colors set from built-in names'
-  elseif a:args == 'now'
-    call s:HourColor()
   else
     let s:mycolors = split(a:args)
     echo 'List of colors set from argument (space-separated names)'
@@ -92,25 +87,5 @@ function! s:NextColor(how, echo_color)
   if (a:echo_color)
     echo g:colors_name
   endif
-endfunction
-
-" Set color scheme according to current time of day.
-function! s:HourColor()
-  let hr = str2nr(strftime('%H'))
-  if hr <= 3
-    let i = 0
-  elseif hr <= 7
-    let i = 1
-  elseif hr <= 14
-    let i = 2
-  elseif hr <= 18
-    let i = 3
-  else
-    let i = 4
-  endif
-  let nowcolors = 'elflord morning desert evening pablo'
-  execute 'colorscheme '.split(nowcolors)[i]
-  redraw
-  echo g:colors_name
 endfunction
 
